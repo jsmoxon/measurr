@@ -1,0 +1,15 @@
+project_home="/Users/jackmoxon/measurr/measurr/pg/"
+
+import sys, os
+sys.path.append(project_home)
+os.environ['DJANGO_SETTINGS_MODULE'] = 'measurr.settings'
+
+from pg.models import *
+
+one = {"question": "",
+           "c1":"", 
+           "c1v":100,
+           "
+}
+
+

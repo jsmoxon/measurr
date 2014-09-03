@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block page %}
+<div class="row" id="header">
+  
+  <h1>{{employee}}'s tasks</h1>
+</div><!--closes header-->
+<div class="row">
+  <div class="col-md-6">
+    <h3>Top Tasks:</h3>
+    {% for task in pending_tasks|slice:":10" %}
+    <li><a href="/pg/task/{{task.id}}/">{{task}}</a> -- <a href="/pg/project/{{task.project.id}}">{{task.project}}</a> {{task.priority_rank}}</li>
+    {% endfor %}
+  </div>
+  
+  <div class="col-md-6">
+      <div>
+	<canvas id="criticality" width="300" height="200"></canvas>
+
+      </div>
+    <h4>Avg. Criticality Score: {{employee.avg_crit_score}}</h4>
+    <h4>Completed tasks: {{completed_tasks_number}}</h4>
+    <h4>Avg. How Well Score: {{employee.avg_how_well_score|floatformat}}
+
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <h3>Completed Tasks:</h3>
+    <table id="comp_task_table">
+      <tr class="table_header">
+      <td>Task</td>
+      <td>How Well?</td>
+      <td>Review</td>
+      <td>Project</td>
+      </tr>
+    {% for task in completed_tasks %}
+    <tr class="{% cycle 'light_blue' 'white' %}">
+      <td><a href="/pg/task/{{task.id}}/">{{task}}</a></td>
+      <td>{{task.task_rating.all.0.how_well}}</td>
+      <td id="long_review_row">{{task.task_rating.all.0.long_review|linebreaks}}</td>
+      <td>{{task.project}}</td>
+     </tr>
+<!--      <li><a href="/pg/task/{{task.id}}/">{{task}}</a> -- {{task.task_rating.all.0.how_well}} -- {{task.project}}</li>-->
+      {% endfor %}
+
+    </table>
+  </div>
+</div>
+
+<script>
+var data = [
+    {
+        value: {{criticality_pie_data.high}},
+        color:"#F7464A",
+        highlight: "#FF5A5E",
+        label: 'High Criticality',
+    },
+    {
+        value: {{criticality_pie_data.med}},
+        color: "#46BFBD",
+        highlight: "#5AD3D1",
+        label: 'Medium Criticality',
+        labelColor : 'white',
+        labelFontSize : '16',
+
+
+    },
+    {
+        value: {{criticality_pie_data.low}},
+        color: "#FDB45C",
+        highlight: "#FFC870",
+        label: 'Low Criticalty',
+                labelColor : 'white',
+
+    }
+]
+
+var pieOptions = {
+
+  scaleShowLabels: true,
+}
+
+
+var criticality= document.getElementById("criticality").getContext("2d");
+
+new Chart(criticality).Pie(data, pieOptions);
+
+</script>
+
+    
+
+{% endblock page %}

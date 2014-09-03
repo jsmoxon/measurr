@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block page%}
+<div class="row">
+  <h1>{{project.name}}</h1>  
+  <h4>Due: {{project.due_date }}</h4>
+  <h5>{{project.description}}</h5>
+
+  <!--<p>{{project.notes}}-->
+</div>
+  <a href="/pg/project/{{project.id}}/create_task/"><button type="button" class="btn btn-primary">Create New Task</button></a>
+  <a href="/pg/project/{{project.id}}/add_user/"><button type="button" class="btn btn-success">Add Users to Project</button></a>
+<div class="row">
+
+  <div class="col-md-6">
+    <h5>To Do:</h5>
+    <ul>
+      {% for task in pending_tasks %}
+      <li><a href="/pg/task/{{task.id}}/">{{task}}</a> -- {{task.description}} -- {{task.primary_assignee}} -- {{task.questions.all}} -- {{task.priority_rank}}</li>
+      {% endfor %}
+    </ul>
+    
+  </div>
+  
+
+
+  <div class="col-md-6">
+    <h5>Who is on the project?</h5>
+    {% for worker in workers %}
+    <li><a href="/pg/employee/{{worker.id}}/">{{worker}}</a></li>
+    {% endfor %}
+  </div>
+
+
+</div>
+
+
+<h5>Done:</h5>
+<ul>
+  {% for task in completed_tasks %}
+  <li><a href="/pg/task/{{task.id}}">{{task}}</a> -- {{task.description}} -- {{task.primary_assignee}} -- {{task.questions.all}} --{{task.priority_rank}}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

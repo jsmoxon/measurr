@@ -1,0 +1,24 @@
+#header {
+background:;
+}
+
+#comp_task_table {
+width:950px;
+}
+
+.table_header {
+font-weight:bold;		      
+}
+
+.light_blue {
+background: #D3E2F2;
+}
+
+.white {
+background: white;
+}
+
+#long_review_row {
+width: 400px;
+}
+

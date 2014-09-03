@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block page %}
+<h1>{{user_profile}}'s Dashboard</h1>
+
+<a href="/pg/create_new_project/"><button type="button" class="btn btn-primary">Create New Project</button></a>
+<a href="/pg/newuser/"><button type="button" class="btn btn-success">Create New User</button></a>
+<h3>Projects</h3>
+<ul>
+{% for project in projects %}
+<li><a href="/pg/project/{{project.id}}/">{{project}}</a></li>
+{% endfor %}
+</ul>
+
+<h3>Users in your Organization</h3>
+{% for worker in cleaned_worker_list %}
+<li><a href="/pg/employee/{{worker.id}}/">{{worker}}</a></li>
+{% endfor %}
+
+{% endblock page %}

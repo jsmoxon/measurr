@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block page %}
+<div class="row">
+
+  <h1>Task:{{task}}</h1>
+  
+  <h4>Project: {{task.project}}</h4>
+  <h4>Assigneed to: {{task.primary_assignee}}</h4>
+  <h4>Priority Rank: {{task.priority_rank}}</h4>
+  <p>Description: {{task.description}}</p>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <h4>When done review below and click submit:</h4>
+    <form action="" method="post" id="form1">
+      {% csrf_token %}
+      {{rating_form}}
+      <input type="submit" class="btn btn-success"  value="Mark Complete"/>
+    </form>
+  </div>
+</div>
+
+
+{% endblock page %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block page%}
+<h1>Add a User to Your Org</h1>
+
+<div class="row">
+  <div class="col-md-4">
+    <form action="" method="post" id="form1">
+      {% csrf_token %}
+      {{form}}
+      <input type="submit" value="Create User" class="btn btn-success"/>
+    </form>
+    <br/><br/>
+    <br/>
+  </div>
+</div>
+{% endblock page %}

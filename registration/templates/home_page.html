@@ -1,0 +1,14 @@
+<h1>Measurr</h1>
+<h4>coming soon</h4>
+
+<h4>Login</h4>
+
+
+<form method="post" action="/">
+{% csrf_token %}
+
+{{form}}
+
+<input type="submit" value="login" />
+<input type="hidden" name="next" value="/pg/" />
+</form>
