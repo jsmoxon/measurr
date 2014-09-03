@@ -22,3 +22,6 @@ background: white;
 width: 400px;
 }
 
+#main-page {
+min-height:480px;
+}
