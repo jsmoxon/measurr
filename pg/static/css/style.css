@@ -3,7 +3,7 @@ background:;
 }
 
 #comp_task_table {
-width:950px;
+width:1100px;
 }
 
 .table_header {
@@ -23,5 +23,18 @@ width: 400px;
 }
 
 #main-page {
-min-height:480px;
+min-height:800px;
 }
+
+.right {
+float:right;
+}
+
+.green {
+background:green;	
+}
+
+.red {
+background:red;
+}
+ 

@@ -40,12 +40,14 @@ class CreateProjectForm(ModelForm):
         widgets = {
             'workers': forms.CheckboxSelectMultiple(),
             'questions': forms.CheckboxSelectMultiple(),
+            'description': Textarea(attrs={'cols':120, 'rows': 10}),
+            
             }
         labels = {
             'name':'Project Name',
             'description':'Project Description',          
-            'questions': 'What questions do you want to ask about each task?',
-            'workers':'Who do you want to assign?',
+            'questions': 'What questions do you want to use to evaluate each task?',
+            'workers':'Who do you want to assign to this project?',
             }
 
 class AddWorkerToProjectForm(ModelForm):
