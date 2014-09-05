@@ -15,6 +15,9 @@ class UserProfile(models.Model):
     def comp_tasks_number(self):
         return len(Task.objects.filter(primary_assignee=self, is_completed=True))
     
+    def get_completed_tasks(self):
+        return Task.objects.filter(primary_assignee=self, is_completed=True)
+        
     def update_well_scores(self):
         completed_tasks = Task.objects.filter(primary_assignee=self, is_completed=True)
         task_ratings = []
@@ -26,6 +29,24 @@ class UserProfile(models.Model):
         self.save()
         self.avg_how_well_score = self.raw_how_well_score/len(completed_tasks)
         return self.save()
+
+    def segment_how_well_scores(self):
+        excellent = 0
+        good = 0
+        poor = 0
+        for task in self.get_completed_tasks():
+            for rating in task.task_rating.all():
+                if rating.how_well.name == "Poor":
+                    poor +=1
+                elif rating.how_well.name == "Good":
+                    good +=1
+                elif rating.how_well.name == "Excellent":
+                    excellent +=1
+        return {'excellent':excellent, 'good':good, 'poor':poor}
+
+    def segment_task_difficulty(self):
+		return
+
 
     def update_raw_crit_score(self):
         completed_tasks = Task.objects.filter(primary_assignee=self, is_completed=True)
@@ -55,9 +76,7 @@ class UserProfile(models.Model):
                 high +=1
             else:
                 print "none avail" 
-        return {'high':high, 'med':med, 'low':low}
-        
-                    
+        return {'high':high, 'med':med, 'low':low} 
     
     def __unicode__(self):
         return str(self.user)

@@ -5,60 +5,30 @@
   <h3>{{employee}}'s stats</h3>
 </div><!--closes header-->
 <div class="row">
-
-<div class="row">
-  <div class="col-md-4">
-    <center>
-      <canvas id="criticality2" width="300" height="200"></canvas>
-      <h5>Criticality</h5>
-      <p>Rank: 2nd</p>
-    </center>
-  </div>
-  <div class="col-md-4">
-    <center>
-      <canvas id="how_well_bar" width="300" height="200"></canvas>
-      <h5>How Well</h5>
-      <p>Avg. Score: {{employee.avg_how_well_score|floatformat}} </p>
-      <p>Rank: 2nd</p>
-    </center>
-  </div>
-  <div class="col-md-4">
-    <center>
-      <canvas id="how_well_pie" width="300" height="200"></canvas>
-      <h5>How Difficult?</h5>
-      <p>Avg. Score: {{employee.avg_crit_score}} </p>
-      <p>Rank: 1st</p>
-    </center>
-  </div>
-
-</div>
-
-<div class="row">
   <div class="col-md-5">
     <h4>Top Tasks:</h4>
     {% for task in pending_tasks|slice:":10" %}
     <li><a href="/pg/task/{{task.id}}/">{{task}}</a> -- {{task.priority_rank}}</li>
     {% endfor e%}
   </div>
-  <div class="col-md-2">
-    <center>
+  <div class="col-md-7">
+    <div class="col-md-4">
+      <canvas id="criticality" width="150" height="100"></canvas>
+      <p>Tasks by Critical Score</p>
+    </div>
+    <div class="col-md-3">
       <h1>{{employee.avg_how_well_score|floatformat}}</h1>
-	  <p>Ability Score</p>
-      </center>
-  </div>
-  <div class="col-md-2">
-	<center>
+      <p>Ability Score</p>
+    </div>
+    <div class="col-md-2">
       <h1>{{completed_tasks_number}}</h1>
       <p>Completed Tasks</p>
-      </center>
-  </div>
-  <div class="col-md-2">
-    <center>
+    </div>
+    <div class="col-md-2">
       <h1>{{employee.avg_crit_score}}</h1>
       <p>Avg. Criticality Score</p>
-      </center>
     </div>
-</div>
+  </div>
   
   
   
@@ -87,7 +57,33 @@
     </table>
   </div>
 </div>
+<div class="row">
+  <div class="red">
+  <div class="col-md-4">
+    <center>
+      <canvas id="criticality2" width="300" height="200"></canvas>
+      <h5>Criticality</h5>
+      <p>Rank: 2nd</p>
+    </center>
+  </div>
+  <div class="col-md-4">
+    <center>
+      <canvas id="how_well_bar" width="300" height="200"></canvas>
+      <h5>How Well</h5>
+      <p>Avg. Score: {{employee.avg_how_well_score|floatformat}} </p>
+      <p>Rank: 2nd</p>
+    </center>
+  </div>
+  <div class="col-md-4">
+    <center>
+      <canvas id="how_well_pie" width="300" height="200"></canvas>
+      <h5>How Well</h5>
+      <p>Avg. Score: {{employee.avg_how_well_score|floatformat}} </p>
+      <p>Rank: 2nd</p>
+    </center>
+  </div>
 
+</div>
 
 <script>
 var critData = [
@@ -118,6 +114,9 @@ var pieOptions = {
 }
 
 
+var criticality= document.getElementById("criticality").getContext("2d");
+
+new Chart(criticality).Pie(critData, pieOptions);
 
 var crit2=document.getElementById("criticality2").getContext("2d");
 new Chart(crit2).Pie(critData, pieOptions);
@@ -127,19 +126,19 @@ how_wellData = [
         value: {{how_well_pie_data.excellent}},
         color:"#2950A3",
         highlight: "#FF5A5E",
-        label: 'Hard',
+        label: 'Excellent',
     },
     {
         value: {{how_well_pie_data.good}},
         color: "#46BFBD",
         highlight: "#5AD3D1",
-        label: 'Medium',
+        label: 'Good',
     },
     {
         value: {{how_well_pie_data.poor}},
         color: "#EB3729",
         highlight: "#FFC870",
-        label: 'Easy',
+        label: 'Poor',
     }
 ]
 

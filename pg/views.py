@@ -147,10 +147,11 @@ def employee_dashboard(request, employee_id):
     completed_tasks =Task.objects.filter(primary_assignee=employee_id, is_completed=True).order_by('-priority_rank')
     completed_tasks_number = len(completed_tasks)
     criticality_pie_data = employee.segment_task_criticality()
+    how_well_pie_data =  employee.segment_how_well_scores()
     context = {'user_profile':user_profile, 'pending_tasks':pending_tasks,
                'completed_tasks':completed_tasks, 'employee':employee, 
                'completed_tasks_number':completed_tasks_number, 
-               'criticality_pie_data':criticality_pie_data}
+               'how_well_pie_data':how_well_pie_data, 'criticality_pie_data':criticality_pie_data}
  
     return render(request, 'employee_dashboard.html', context)
 
