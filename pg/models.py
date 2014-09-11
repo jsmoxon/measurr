@@ -132,10 +132,12 @@ class TaskHowWell(models.Model):
         return self.name
 
 class TaskRating(models.Model):
+    reviewer = models.ForeignKey(UserProfile, null=True, blank=True)
+    future_review_date = models.DateField(null=True, blank=True)
     long_review = models.TextField(blank=True, null=True)
     how_well = models.ForeignKey(TaskHowWell, null=True, blank=True)
     def __unicode__(self):
-        return self.long_review
+        return str(self.reviewer)
 
 class Task(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
@@ -146,6 +148,7 @@ class Task(models.Model):
     future_eval_interval = models.IntegerField(blank=True, null=True)
     is_completed = models.BooleanField(default=False)
     task_rating = models.ManyToManyField(TaskRating, blank=True, null=False)
+    priority_choices = models.ManyToManyField(PriorityChoice, null=True, blank=True)
 
     def __unicode__(self):
         return self.name

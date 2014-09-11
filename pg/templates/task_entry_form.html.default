@@ -8,7 +8,7 @@
     <form action="" method="post" id="form1">
       {% csrf_token %}
 {{form}}
-{{choice_form}}
+{{rating_form}}
 <!--      {{form.name.label}}
       {{form.name}}
       {{form.description.label}}
@@ -24,7 +24,7 @@
 
       <select>
 	{% for choice in question.prioritychoice_set.all%}
-	<option value={{choice.id}}>{{choice}} - {{choice.choice_value}}</option>
+	<option value={{choice.choice_value}}>{{choice}} - {{choice.choice_value}}</option>
 
 
 	{% endfor%}
@@ -34,17 +34,17 @@
       <br/><br/>
 <!--      {{form.priority_rank}}-->
 <!--      <input type="hidden" name="priority_rank" id="id_priority_rank" />-->
-      <input type="submit" onclick="getSelectedChoices()" class="btn btn-primary" value="Create Task"/>
+      <input type="submit" onclick="calcTotal(this), bam()" class="btn btn-primary" value="Create Task"/>
     </form>
   </div>  
 </div>
 <script type="text/javascript">
-    function getSelectedChoices(){
+    function bam() {
       choices = []
       for(i=1; i <oSels.length; i++){
-        choices.push(oSels[i].value);
+        choices.push(oSels[i].options[0].text);
       }
-      document.getElementById('id_choice_list').value = choices;
+      alert(choices);
     }
 
     function calcTotal(oForm){

@@ -11,7 +11,19 @@
   {% for choice in task.priority_choices.all %}
   <p>{{choice.priority_question}} -- {{choice}}</p>
   {% endfor %}
-  <a href="/pg/review/{{task.id}}/"><button class="btn btn-primary">Mark Complete</button></a>
 </div>
+
+
+<div class="row">
+  <div class="col-md-8">
+    <h4>When done review below and click submit:</h4>
+    <form action="" method="post" id="form1">
+      {% csrf_token %}
+      {{rating_form}}
+      <input type="submit" class="btn btn-success"  value="Mark Complete"/>
+    </form>
+  </div>
+</div>
+
 
 {% endblock page %}

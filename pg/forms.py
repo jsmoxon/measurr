@@ -2,21 +2,24 @@ from models import *
 from django.forms import ModelForm, Textarea, HiddenInput
 from django import forms
 
+
 class TaskEntryForm(ModelForm):
     class Meta:
         model = Task
         fields = ('name', 'description', 'primary_assignee', 'priority_rank')
         widgets = {
             'description': Textarea(attrs={'cols': 40, 'rows': 5}),
-            'priority_rank': HiddenInput()
+            'priority_rank': HiddenInput(),
         }
 
+class TaskEntryFormChoice(forms.Form):
+    choice_list = forms.CharField(widget=forms.HiddenInput)
 
 class TaskRatingForm(ModelForm):
     is_task_complete = forms.BooleanField()
     class Meta:
         model = TaskRating
-        fields = ('how_well','long_review')
+        fields = ('how_well','long_review',)
         labels = {
             'how_well':'How Well Was it Done?',
             'long_review':'Please review in detail here:',

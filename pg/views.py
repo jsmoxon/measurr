@@ -94,25 +94,45 @@ def create_task(request, project_id):
     questions = project.questions.all()
     if request.method == 'POST':
         form = TaskEntryForm(request.POST)
+        choice_form = TaskEntryFormChoice(request.POST)
         if form.is_valid():
             task = Task()
             task.name = form.cleaned_data['name']
             task.project = project
             task.description = form.cleaned_data['description']
             task.primary_assignee = form.cleaned_data['primary_assignee']
-            task.priority_rank = form.cleaned_data['priority_rank']
+            task.save()
+            print choice_form
+            choices = []
+            choice_list = str(choice_form.cleaned_data['choice_list'])
+            for i in choice_list.split(','):
+                choices.append(int(i))
+            priority_rank = 0
+            for choice in choices:
+                selected_choice = PriorityChoice.objects.get(pk=choice)
+                task.priority_choices.add(selected_choice)
+                priority_rank += selected_choice.choice_value
+            task.priority_rank = priority_rank
             task.save()
             return redirect('project_page', project_id)
         else:
             return HttpResponse("Couldn't upload task. Please contact support.")
     else:
         form = TaskEntryForm()
+        choice_form = TaskEntryFormChoice()
         form.fields["primary_assignee"].queryset = Organization.objects.get(user_profile=user_profile).user_profile.all()
         
-    return render(request, 'task_entry_form.html', {'form':form, 'questions':questions, 'project':project})
+    return render(request, 'task_entry_form.html', {'form':form, 'questions':questions, 'project':project, 'choice_form':choice_form})
         
 def view_task(request, task_id):
+    task = Task.objects.get(pk=task_id)
+    task_project_id = task.project.id
+    return render(request, 'task_view.html', {'task':task})
+
+
+def review_task(request, task_id):
     """lets you look at the task info and submit it as complete and review it; still needs significant work - multiple reviews from different folks etc. """
+    user_profile = request.user.get_profile()
     task = Task.objects.get(pk=task_id)
     task_project_id = task.project.id
     if request.method == 'POST':
@@ -121,6 +141,7 @@ def view_task(request, task_id):
             task_rating = TaskRating()
             task_rating.long_review = rating_form.cleaned_data['long_review']
             task_rating.how_well = rating_form.cleaned_data['how_well']
+            task_rating.reviewer = user_profile
             task_rating.save()
             task = Task.objects.get(pk=task_id)
             task.is_completed = rating_form['is_task_complete']
@@ -135,7 +156,7 @@ def view_task(request, task_id):
     else:
         form = TaskEntryForm()
         rating_form = TaskRatingForm()
-    return render(request, 'task_view.html', {'form':form, 'task':task, 'rating_form':rating_form})
+    return render(request, 'task_review.html', {'form':form, 'task':task, 'rating_form':rating_form})
 
 
 def employee_dashboard(request, employee_id):

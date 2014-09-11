@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^project/(?P<project_id>\d+)/add_user/$', views.add_user_to_project, name='add_user'),
     url(r'^project/(?P<project_id>\d+)/create_task/$', views.create_task, name='create_task'),
     url(r'^task/(?P<task_id>\d+)/$', views.view_task, name='view_task'),
+    url(r'^review/(?P<task_id>\d+)/$', views.review_task, name='review_task'),
                        
 #need to change the url to be more interesting here for employee page
     url(r'^employee/(?P<employee_id>\d+)/$', views.employee_dashboard, name='employee_dashboard'),
