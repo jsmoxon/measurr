@@ -109,4 +109,6 @@ def heroku_settings():
         )
     return 
 
+heroku_settings()
+
 

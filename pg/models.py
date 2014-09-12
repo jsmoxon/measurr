@@ -45,8 +45,33 @@ class UserProfile(models.Model):
         return {'excellent':excellent, 'good':good, 'poor':poor}
 
     def segment_task_difficulty(self):
-		return
+        hard = 0
+        moderate = 0
+        easy = 0
+        for task in self.get_completed_tasks():
+            for choice in task.priority_choices.filter(key="difficulty"):
+                if choice.choice_value == 100:
+                    hard +=1
+                elif choice.choice_value == 50:
+                    moderate +=1
+                elif choice.choice_value == 10:
+                    easy +=1
+        return {'hard':hard, 'moderate':moderate, 'easy':easy}
 
+    def segment_how_quickly(self):
+        early = 0
+        ontime = 0
+        late = 0
+        for task in self.get_completed_tasks():
+            for rating in task.task_rating.all():
+                #should go off key rather than score ultimately
+                if rating.how_quickly is not None and rating.how_quickly.score == 100:
+                    early +=1
+                elif rating.how_quickly is not None and rating.how_quickly.score == 75:
+                    ontime+=1
+                elif rating.how_quickly is not None and rating.how_quickly.score == 10:
+                    late+=1
+        return {'early':early, 'ontime':ontime, 'late':late}
 
     def update_raw_crit_score(self):
         completed_tasks = Task.objects.filter(primary_assignee=self, is_completed=True)
@@ -104,6 +129,7 @@ class PriorityChoice(models.Model):
     priority_question = models.ForeignKey(PriorityQuestion)
     choice_text = models.CharField(max_length=1000, blank=True, null=True)
     choice_value = models.IntegerField()
+    key = models.CharField(max_length=1000, blank=True, null=True)
     def __unicode__(self):
         return self.choice_text
 
@@ -131,11 +157,19 @@ class TaskHowWell(models.Model):
     def __unicode__(self):
         return self.name
 
+class TaskHowQuickly(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+    score = models.FloatField(blank=True, null=True)
+    key = models.CharField(max_length=100, blank=True, null=True, unique=True)
+    def __unicode__(self):
+        return self.name
+
 class TaskRating(models.Model):
     reviewer = models.ForeignKey(UserProfile, null=True, blank=True)
     future_review_date = models.DateField(null=True, blank=True)
     long_review = models.TextField(blank=True, null=True)
     how_well = models.ForeignKey(TaskHowWell, null=True, blank=True)
+    how_quickly = models.ForeignKey(TaskHowQuickly, null=True, blank=True)
     def __unicode__(self):
         return str(self.reviewer)
 

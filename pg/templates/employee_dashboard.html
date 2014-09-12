@@ -16,6 +16,31 @@
   </div>
   <div class="col-md-4">
     <center>
+      <canvas id="how_quickly_bar" width="300" height="200"></canvas>
+      <h5>How Quickly</h5>
+      <p>Rank: 2nd</p>
+    </center>
+  </div>
+  <div class="col-md-4">
+    <center>
+      <canvas id="difficulty_pie" width="300" height="200"></canvas>
+      <h5>How Difficult?</h5>
+      <p>Rank: 1st</p>
+    </center>
+  </div>
+
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <center>
+      <canvas id="ability_score" width="300" height="200"></canvas>
+      <h1 class="donut-inner">{{employee.avg_how_well_score|floatformat}}</h1>
+      <h5>Ability Score</h5>  
+      <p>Rank: 2nd</p>
+    </center>
+  </div>
+  <div class="col-md-4">
+    <center>
       <canvas id="how_well_bar" width="300" height="200"></canvas>
       <h5>How Well</h5>
       <p>Avg. Score: {{employee.avg_how_well_score|floatformat}} </p>
@@ -24,8 +49,9 @@
   </div>
   <div class="col-md-4">
     <center>
-      <canvas id="how_well_pie" width="300" height="200"></canvas>
-      <h5>How Difficult?</h5>
+      <canvas id="crit_number" width="300" height="200"></canvas>
+      <h1 class="donut-inner">{{employee.avg_crit_score|floatformat}}</h1>
+      <h5>Criticality Score</h5>
       <p>Avg. Score: {{employee.avg_crit_score}} </p>
       <p>Rank: 1st</p>
     </center>
@@ -54,7 +80,7 @@
   </div>
   <div class="col-md-2">
     <center>
-      <h1>{{employee.avg_crit_score}}</h1>
+      <h1 class="">{{employee.avg_crit_score}}</h1>
       <p>Avg. Criticality Score</p>
       </center>
     </div>
@@ -124,27 +150,27 @@ new Chart(crit2).Pie(critData, pieOptions);
 
 how_wellData = [
     {
-        value: {{how_well_pie_data.excellent}},
+        value: {{difficulty_pie_data.hard}},
         color:"#2950A3",
         highlight: "#FF5A5E",
         label: 'Hard',
     },
     {
-        value: {{how_well_pie_data.good}},
+        value: {{difficulty_pie_data.moderate}},
         color: "#46BFBD",
         highlight: "#5AD3D1",
-        label: 'Medium',
+        label: 'Moderate',
     },
     {
-        value: {{how_well_pie_data.poor}},
+        value: {{difficulty_pie_data.easy}},
         color: "#EB3729",
         highlight: "#FFC870",
         label: 'Easy',
     }
 ]
 
-var how_well_pie=document.getElementById("how_well_pie").getContext("2d");
-new Chart(how_well_pie).Pie(how_wellData, pieOptions);
+var difficulty_pie=document.getElementById("difficulty_pie").getContext("2d");
+new Chart(difficulty_pie).Pie(how_wellData, pieOptions);
 
 var wellBarData = {
     labels: ["Excellent", "Good", "Poor"],
@@ -161,6 +187,64 @@ var wellBarData = {
 
 var how_well_bar=document.getElementById("how_well_bar").getContext("2d");
 new Chart(how_well_bar).Bar(wellBarData);
+
+var quicklyBarData = {
+    labels: ["Early", "On Time", "Late"],
+    datasets: [
+        {
+            fillColor: "rgba(220,220,220,0.5)",
+            strokeColor: "rgba(220,220,220,0.8)",
+            highlightFill: "rgba(220,220,220,0.75)",
+            highlightStroke: "rgba(220,220,220,1)",
+            data: [{{how_quickly_bar_data.early}},{{how_quickly_bar_data.ontime}},{{how_quickly_bar_data.late}}]
+        }
+]
+};
+
+var how_quickly_bar=document.getElementById("how_quickly_bar").getContext("2d");
+new Chart(how_quickly_bar).Bar(quicklyBarData);
+
+
+abilityScoreData = [
+    {
+        value: {{employee.avg_how_well_score|floatformat}},
+        color:"#2950A3",
+        highlight: "#FF5A5E",
+        labelFontFamily : "Arial",
+        labelFontStyle : "normal",
+        labelFontSize : 24,
+        labelColor : "#666"
+    },
+    {
+        value: 100-{{employee.avg_how_well_score|floatformat}} ,
+        color: "#46BFBD",
+        highlight: "#5AD3D1",
+    }
+]
+
+var abilityScore=document.getElementById("ability_score").getContext("2d");
+new Chart(abilityScore).Doughnut(abilityScoreData);
+
+critNumberData = [
+    {
+        value: {{employee.avg_crit_score|floatformat}},
+        color:"#2950A3",
+        highlight: "#FF5A5E",
+        labelFontFamily : "Arial",
+        labelFontStyle : "normal",
+        labelFontSize : 24,
+        labelColor : "#666"
+    },
+    {
+        value: 1000-({{employee.avg_crit_score|floatformat}}) ,
+        color: "#FDB45C",
+        highlight: "#5AD3D1",
+    }
+]
+
+var critNumber=document.getElementById("crit_number").getContext("2d");
+new Chart(critNumber).Doughnut(critNumberData);
+
 
 
 </script>

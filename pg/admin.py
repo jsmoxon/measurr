@@ -7,6 +7,7 @@ admin.site.register(Project)
 admin.site.register(Task)
 admin.site.register(TaskRating)
 admin.site.register(TaskHowWell)
+admin.site.register(TaskHowQuickly)
 admin.site.register(Manager)
 
 

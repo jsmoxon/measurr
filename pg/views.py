@@ -141,6 +141,7 @@ def review_task(request, task_id):
             task_rating = TaskRating()
             task_rating.long_review = rating_form.cleaned_data['long_review']
             task_rating.how_well = rating_form.cleaned_data['how_well']
+            task_rating.how_quickly =rating_form.cleaned_data['how_quickly']
             task_rating.reviewer = user_profile
             task_rating.save()
             task = Task.objects.get(pk=task_id)
@@ -169,10 +170,13 @@ def employee_dashboard(request, employee_id):
     completed_tasks_number = len(completed_tasks)
     criticality_pie_data = employee.segment_task_criticality()
     how_well_pie_data =  employee.segment_how_well_scores()
+    difficulty_pie_data = employee.segment_task_difficulty()
+    how_quickly_bar_data = employee.segment_how_quickly()
     context = {'user_profile':user_profile, 'pending_tasks':pending_tasks,
                'completed_tasks':completed_tasks, 'employee':employee, 
                'completed_tasks_number':completed_tasks_number, 
-               'how_well_pie_data':how_well_pie_data, 'criticality_pie_data':criticality_pie_data}
+               'how_well_pie_data':how_well_pie_data, 'criticality_pie_data':criticality_pie_data,
+               'difficulty_pie_data':difficulty_pie_data, 'how_quickly_bar_data':how_quickly_bar_data}
  
     return render(request, 'employee_dashboard.html', context)
 

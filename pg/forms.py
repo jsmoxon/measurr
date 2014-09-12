@@ -19,7 +19,7 @@ class TaskRatingForm(ModelForm):
     is_task_complete = forms.BooleanField()
     class Meta:
         model = TaskRating
-        fields = ('how_well','long_review',)
+        fields = ('how_well','long_review', 'how_quickly')
         labels = {
             'how_well':'How Well Was it Done?',
             'long_review':'Please review in detail here:',
