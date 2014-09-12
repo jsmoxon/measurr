@@ -1,5 +1,5 @@
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "measurr.prod_settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "measurr.settings")
 
 
 from django.core.wsgi import get_wsgi_application
