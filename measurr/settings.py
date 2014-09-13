@@ -110,6 +110,6 @@ def heroku_settings():
     return 
 
 #uncomment before deploying
-#heroku_settings()
+heroku_settings()
 
 

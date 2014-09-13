@@ -181,10 +181,11 @@ class Task(models.Model):
     priority_rank = models.IntegerField(blank=True, null=True)
     future_eval_interval = models.IntegerField(blank=True, null=True)
     is_completed = models.BooleanField(default=False)
+    is_reviewed_by_manager = models.NullBooleanField(default=False)
     task_rating = models.ManyToManyField(TaskRating, blank=True, null=False)
     priority_choices = models.ManyToManyField(PriorityChoice, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
 
-    
+

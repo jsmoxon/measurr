@@ -145,12 +145,17 @@ def review_task(request, task_id):
             task_rating.reviewer = user_profile
             task_rating.save()
             task = Task.objects.get(pk=task_id)
+#this line can be removed to remove ugly check box
             task.is_completed = rating_form['is_task_complete']
             task.task_rating.add(task_rating.id)
             task.save()
             task.primary_assignee.update_raw_crit_score()
             task.primary_assignee.update_avg_crit_score()
             task.primary_assignee.update_well_scores()
+            if task.project.manager.user_profile == user_profile:
+                task.is_reviewed_by_manager = True
+                task.save()
+
             return redirect('project_page',task_project_id)
         else:
             return HttpResponse("fail")
