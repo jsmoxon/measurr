@@ -16,7 +16,7 @@ class TaskEntryFormChoice(forms.Form):
     choice_list = forms.CharField(widget=forms.HiddenInput)
 
 class TaskRatingForm(ModelForm):
-    is_task_complete = forms.BooleanField()
+#    is_task_complete = forms.BooleanField()
     class Meta:
         model = TaskRating
         fields = ('how_well','long_review', 'how_quickly')

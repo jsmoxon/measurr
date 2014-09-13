@@ -8,9 +8,14 @@
   <h5>Assigneed to: {{task.primary_assignee}}</h5>
   <h5>Priority Rank: {{task.priority_rank}}</h5>
   <p>Description: {{task.description}}</p>
+  <ol>
   {% for choice in task.priority_choices.all %}
-  <p>{{choice.priority_question}} -- {{choice}}</p>
+  <li>
+    <h5>{{choice.priority_question}}</h5>
+    <p>{{choice}}</p>
+  </li>
   {% endfor %}
+</ol>
   <a href="/pg/review/{{task.id}}/"><button class="btn btn-primary">Mark Complete</button></a>
 </div>
 

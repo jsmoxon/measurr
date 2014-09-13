@@ -11,33 +11,74 @@
   <a href="/pg/project/{{project.id}}/add_user/"><button type="button" class="btn btn-success">Add Users to Project</button></a>
 <div class="row">
 
-  <div class="col-md-6">
+  <div class="col-md-8">
     <h5>To Do:</h5>
     <ul>
       {% for task in pending_tasks %}
       <li><a href="/pg/task/{{task.id}}/">{{task}}</a> -- {{task.description}} -- {{task.primary_assignee}} -- {{task.questions.all}} -- {{task.priority_rank}}</li>
       {% endfor %}
     </ul>
+
+  <h5>Done:</h5>
+  <ul>
+   {% for task in completed_tasks %}
+    <li><a href="/pg/task/{{task.id}}">{{task}}</a> -- {{task.description}} -- {{task.primary_assignee}} -- {{task.questions.all}} --{{task.priority_rank}}</li>
+    {% endfor %}
+  </ul>
     
   </div>
   
 
 
-  <div class="col-md-6">
-    <h5>Who is on the project?</h5>
-    {% for worker in workers %}
-    <li><a href="/pg/employee/{{worker.id}}/">{{worker}}</a></li>
-    {% endfor %}
+  <div class="col-md-4">
+    <center>
+      <h5>Progress</h5>
+      <canvas id="progress_chart" width="300" height="200"></canvas>
+      <h1 class="donut-inner">{{completion_percentage|floatformat:"0"}}%</h1>
+      <h5>Who is on the project?</h5>
+      {% for worker in workers %}
+      <li><a href="/pg/employee/{{worker.id}}/">{{worker}}</a></li>
+      {% endfor %}
+      <h5>Project Objectives</h5>
+        <li>Make cash money</li>
+        <li>Improve our image abroad</li>
+        <li>Decrease turnover </li>
+    </center>
+
+
+
+
   </div>
 
 
 </div>
 
+<script type="text/javascript">
+progressChartData = [
+    {
+        value: {{pending_tasks|length}},
+        color:"#CED3CF",
+        highlight: "#E9DEE3",
+        labelFontFamily : "Arial",
+        labelFontStyle : "normal",
+        labelFontSize : 24,
+        labelColor : "#666",
+        label: 'Pending Tasks'
+    },
+    {
+        value: {{completed_tasks|length}} ,
+        color: "#FDB45C",
+        highlight: "#5AD3D1",
+        label: "Completed Tasks"
+    }
+]
 
-<h5>Done:</h5>
-<ul>
-  {% for task in completed_tasks %}
-  <li><a href="/pg/task/{{task.id}}">{{task}}</a> -- {{task.description}} -- {{task.primary_assignee}} -- {{task.questions.all}} --{{task.priority_rank}}</li>
-  {% endfor %}
-</ul>
+var progressChart = document.getElementById("progress_chart").getContext("2d");
+new Chart(progressChart).Doughnut(progressChartData);
+
+
+
+</script>
+
+
 {% endblock %}

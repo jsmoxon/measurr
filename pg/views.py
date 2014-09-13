@@ -64,9 +64,11 @@ def project_page(request, project_id):
     project = Project.objects.get(pk=project_id)
     pending_tasks = Task.objects.filter(project=project_id, is_completed=False).order_by('-priority_rank')
     completed_tasks =Task.objects.filter(project=project_id, is_completed=True).order_by('-priority_rank')
+    completion_percentage = 100*(float(len(completed_tasks))/(float(len(completed_tasks))+float(len(pending_tasks))))
+    #float(len(completed_tasks)/(len(pending_tasks)+len(completed_tasks)))
     workers = project.workers.all()
     context = {'user_profile':user_profile, 'project': project, 'pending_tasks':pending_tasks, 
-               'completed_tasks':completed_tasks, 'workers':workers}
+               'completed_tasks':completed_tasks, 'workers':workers, 'completion_percentage': completion_percentage}
     return render(request, 'projects_page.html',context)
 
 def add_user_to_project(request, project_id):
@@ -145,8 +147,7 @@ def review_task(request, task_id):
             task_rating.reviewer = user_profile
             task_rating.save()
             task = Task.objects.get(pk=task_id)
-#this line can be removed to remove ugly check box
-            task.is_completed = rating_form['is_task_complete']
+            task.is_completed = True
             task.task_rating.add(task_rating.id)
             task.save()
             task.primary_assignee.update_raw_crit_score()
