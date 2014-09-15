@@ -15,14 +15,14 @@
     <h5>To Do:</h5>
     <ul>
       {% for task in pending_tasks %}
-      <li><a href="/pg/task/{{task.id}}/">{{task}}</a> -- {{task.description}} -- {{task.primary_assignee}} -- {{task.questions.all}} -- {{task.priority_rank}}</li>
+      <li><a href="/pg/task/{{task.id}}/">{{task}}</a> -- {{task.description}} -- {{task.primary_assignee}}<!-- -- {{task.priority_rank}}--></li>
       {% endfor %}
     </ul>
 
   <h5>Done:</h5>
   <ul>
    {% for task in completed_tasks %}
-    <li><a href="/pg/task/{{task.id}}">{{task}}</a> -- {{task.description}} -- {{task.primary_assignee}} -- {{task.questions.all}} --{{task.priority_rank}}</li>
+    <li><a href="/pg/task/{{task.id}}">{{task}}</a> -- {{task.description}} -- {{task.primary_assignee}}<!-- --{{task.priority_rank}}--></li>
     {% endfor %}
   </ul>
     

@@ -182,7 +182,7 @@ def employee_dashboard(request, employee_id):
                'completed_tasks':completed_tasks, 'employee':employee, 
                'completed_tasks_number':completed_tasks_number, 
                'how_well_pie_data':how_well_pie_data, 'criticality_pie_data':criticality_pie_data,
-               'difficulty_pie_data':difficulty_pie_data, 'how_quickly_bar_data':how_quickly_bar_data}
+               'difficulty_pie_data':difficulty_pie_data, 'how_quickly_bar_data':how_quickly_bar_data, 'projects':projects}
  
     return render(request, 'employee_dashboard.html', context)
 

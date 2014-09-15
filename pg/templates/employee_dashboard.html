@@ -35,7 +35,7 @@
     <center>
       <canvas id="ability_score" width="300" height="200"></canvas>
       <h1 class="donut-inner">{{employee.avg_how_well_score|floatformat}}</h1>
-      <h5>Ability Score</h5>  
+      <h5>Average Ability Score</h5>  
       <p>Rank: 2nd</p>
     </center>
   </div>
@@ -60,13 +60,22 @@
 </div>
 
 <div class="row">
-  <div class="col-md-5">
+  <div class="col-md-6">
     <h4>Top Tasks:</h4>
     {% for task in pending_tasks|slice:":10" %}
-    <li><a href="/pg/task/{{task.id}}/">{{task}}</a> -- {{task.priority_rank}}</li>
+    <li><a href="/pg/task/{{task.id}}/">{{task}}</a> -- <!--{{task.priority_rank}} -- -->{{task.description}}</li>
     {% endfor e%}
   </div>
-  <div class="col-md-2">
+
+  <div class="col-md-6">
+    <h4>Projects</h4>
+    <ul>
+      {% for project in projects %}
+      <li><a href="/pg/project/{{project.id}}/">{{project}}</a></li>  
+      {% endfor %}
+    </ul>
+  </div>
+<!--  <div class="col-md-2">
     <center>
       <h1>{{employee.avg_how_well_score|floatformat}}</h1>
 	  <p>Ability Score</p>
@@ -84,7 +93,7 @@
       <p>Avg. Criticality Score</p>
       </center>
     </div>
-</div>
+</div>-->
   
   
   
@@ -119,14 +128,14 @@
 var critData = [
     {
         value: {{criticality_pie_data.high}},
-        color:"#F7464A",
-        highlight: "#FF5A5E",
+        color: "#46BFBD",
+        highlight: "#5AD3D1",
         label: 'High Criticality',
     },
     {
         value: {{criticality_pie_data.med}},
-        color: "#46BFBD",
-        highlight: "#5AD3D1",
+        color:"#F7464A",
+        highlight: "#FF5A5E",
         label: 'Medium',
     },
     {
@@ -210,15 +219,13 @@ abilityScoreData = [
         value: {{employee.avg_how_well_score|floatformat}},
         color:"#2950A3",
         highlight: "#FF5A5E",
-        labelFontFamily : "Arial",
-        labelFontStyle : "normal",
-        labelFontSize : 24,
         labelColor : "#666"
     },
     {
         value: 100-{{employee.avg_how_well_score|floatformat}} ,
-        color: "#46BFBD",
-        highlight: "#5AD3D1",
+        color:"#CED3CF",
+        highlight: "#E9DEE3",
+
     }
 ]
 
@@ -228,17 +235,19 @@ new Chart(abilityScore).Doughnut(abilityScoreData);
 critNumberData = [
     {
         value: {{employee.avg_crit_score|floatformat}},
-        color:"#2950A3",
+        color:"#F7464A",
         highlight: "#FF5A5E",
+
         labelFontFamily : "Arial",
         labelFontStyle : "normal",
         labelFontSize : 24,
         labelColor : "#666"
     },
     {
-        value: 1000-({{employee.avg_crit_score|floatformat}}) ,
-        color: "#FDB45C",
-        highlight: "#5AD3D1",
+        value: 650-({{employee.avg_crit_score|floatformat}}) ,
+        color:"#CED3CF",
+        highlight: "#E9DEE3",
+
     }
 ]
 
